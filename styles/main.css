@@ -1,0 +1,81 @@
+html {
+  height: 100%;
+  min-height: 100%;
+}
+
+#myCanvas {
+  background-color: black;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  background-color: lightgrey;
+}
+
+.footerText {
+  padding-right: 15px;
+  font-weight: bold;
+}
+
+.github-img,
+.linkedin-img {
+  height: 25px;
+  width: 25px;
+  padding: 5px;
+}
+
+.footer-imgs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The Modal (background) */
+.theme-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.theme-modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.theme-close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.theme-close:hover,
+.theme-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#theme-button {
+  width: 80px;
+  height: 30px;
+}
