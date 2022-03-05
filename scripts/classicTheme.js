@@ -1,12 +1,12 @@
 //VARIABLES
 let xDashesPosition = [];
-const wordLetters = [];
-console.log(wordLetters);
-const correctLetters = [];
-console.log("correct"+correctLetters);
-const wrongLetters = [];
 const typedLetters = [];
 console.log(typedLetters);
+const correctLetters = [];
+console.log(correctLetters);
+const wrongLetters = [];
+console.log(wrongLetters);
+
 let hits = 0;
 let mistakes = 0;
 let attempts = 7;
@@ -87,7 +87,7 @@ let words = {
 // Selecting a random word
 const wordRandomSelected = words.biology[Math.floor(Math.random() * words.biology.length)];
 console.log(wordRandomSelected)
-wordLetters.push(wordRandomSelected.split(""))
+
 // Drawing the letters
 function drawLetters(letter, xPosition, yPosition) {
     ctx.font = "55px Arial";
@@ -105,46 +105,24 @@ function drawDashes(xPosition) {
 }
 drawDashes(500);
 
-
 // Drawing the correct letters in the dashes
 window.addEventListener("keydown", typingLetter);
 
 function typingLetter(event) {
     const keyPressed = event.key;
     typedLetters.push(keyPressed)
-    for (let i = 0; i < wordRandomSelected.length; i++) {
-        correctLetters.push(wordRandomSelected[i]);
-        if (correctLetters[i] === keyPressed) {
-            drawLetters(correctLetters[i], xDashesPosition[i], 440);
-        } 
-    }
-}
-
-
-
-/*
-// Drawing the correct letters in the dashes
-window.addEventListener("keydown", typingLetter);
-
-function typingLetter(event) {
-    const keyPressed = event.key;
-    typedLetters.push(keyPressed)
-    if (wordRandomSelected.includes(keyPressed)) {
-        correctLetters.push(keyPressed);
-    } else {
+    let miss = wordRandomSelected.includes(keyPressed);
+    if (miss != true) {
         wrongLetters.push(keyPressed);
+    } else {
+        correctLetters.push(keyPressed);
     }
-    drawCorrectLetters()
-}
-
-// Drawing the correct letters
-function drawCorrectLetters() {
-    for (let i = 0; i < wordRandomSelected.length; i++) {
-        if (correctLetters[i] === typedLetters[i]) {
-            drawLetters(correctLetters[i], xDashesPosition[i], 440);
-        }         
-        console.log(correctLetters[i]);
-        console.log(xDashesPosition[i]);
+    let counter = 0;
+    while (counter < wordRandomSelected.length) {
+        if (wordRandomSelected[counter] === keyPressed) {
+            drawLetters(wordRandomSelected[counter], xDashesPosition[counter], 440);
+            console.log(wordRandomSelected[counter])
+        }
+        counter += 1;
     }
 }
-*/
