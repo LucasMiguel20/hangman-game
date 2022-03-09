@@ -6,7 +6,7 @@ let starGameBtn = document.getElementById("start-game");
 const modalDiv = document.createElement("div");
 modalDiv.setAttribute("id", "modal-theme");
 modalDiv.setAttribute("class", "theme-modal");
-body.insertBefore(modalDiv, starGameBtn);
+body.insertBefore(modalDiv, null);
 
 // Create the modal contents
 const modalContentDiv = document.createElement("div");

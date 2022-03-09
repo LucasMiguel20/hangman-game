@@ -1,5 +1,8 @@
 //VARIABLES
-let xDashesPosition = [];
+let dashesPosition = [];
+console.log(dashesPosition);
+let wrongLettersPosition = [];
+console.log(wrongLettersPosition);
 const typedLetters = [];
 console.log(typedLetters);
 const correctLetters = [];
@@ -58,25 +61,70 @@ function drawingTheBody(color, mtx, mty, ltx, lty) {
     ctx.stroke();
 }
 
+function drawBodyParts(mistakes) {
+    switch (mistakes) {
+        case 1:
+            drawingHead()
+            break;
+        case 2:
+            drwaingNeck()
+            break;
+        case 3:
+            drwaingBody()
+            break;
+        case 4:
+            drwaingRightArm()
+            break;
+        case 5:
+            drwaingLeftArm()
+            break;
+        case 6:
+            drwaingLeftLeg()
+            break;
+        case 7:
+            drwaingRightLeg()
+            break;
+    }
+}
+
 // Head
-ctx.beginPath();
-ctx.arc(355, 250, 50, 0, 2 * Math.PI);
-ctx.stroke();
+function drawingHead() {
+    ctx.beginPath();
+    ctx.arc(355, 250, 50, 0, 2 * Math.PI);
+    ctx.stroke();
+}
+
+// Neck
+function drwaingNeck() {
+    drawingTheBody("black", 355, 300, 355, 325);
+}
 
 // Body
-drawingTheBody("black", 355, 300, 355, 500);
+function drwaingBody() {
+    drawingTheBody("black", 355, 325, 355, 500);
+}
 
 // Right arm
-drawingTheBody("black", 355, 325, 250, 250);
+function drwaingRightArm() {
+    drawingTheBody("black", 355, 325, 250, 250);
+}
+
 
 // Left arm
-drawingTheBody("black", 355, 325, 460, 250);
+function drwaingLeftArm() {
+    drawingTheBody("black", 355, 325, 460, 250);
+}
 
 // Left leg
-drawingTheBody("black", 355, 500, 460, 600);
+function drwaingLeftLeg() {
+    drawingTheBody("black", 355, 500, 460, 600);
+}
 
 // Right leg
-drawingTheBody("black", 355, 500, 250, 600);
+function drwaingRightLeg() {
+    drawingTheBody("black", 355, 500, 250, 600);
+}
+
 
 // **********DASHES AND WORDS**********
 // Creating words by categories
@@ -89,9 +137,9 @@ const wordRandomSelected = words.biology[Math.floor(Math.random() * words.biolog
 console.log(wordRandomSelected)
 
 // Drawing the letters
-function drawLetters(letter, xPosition, yPosition) {
+function drawLetters(color, letter, xPosition, yPosition) {
     ctx.font = "55px Arial";
-    ctx.fillStyle = "blue";
+    ctx.fillStyle = color;
     ctx.fillText(letter.toUpperCase(), xPosition + 5, yPosition);
 }
 
@@ -99,30 +147,46 @@ function drawLetters(letter, xPosition, yPosition) {
 function drawDashes(xPosition) {
     for (let i = 0; i < wordRandomSelected.length; i++) {
         xPosition += 70;
-        xDashesPosition.push(xPosition);
+        dashesPosition.push(xPosition);
         drawingStructure("black", xPosition, 450, 50, 5);
     }
 }
 drawDashes(500);
 
-// Drawing the correct letters in the dashes
-window.addEventListener("keydown", typingLetter);
+function drawWrongLetters(xPosition) {
+    for (let i = 0; i < attempts; i++) {
+        xPosition += 70;
+        wrongLettersPosition.push(xPosition);
+    }
+}
+drawWrongLetters(500);
 
+// Drawing the correct letters in the dashes and wrong letters + body parts
 function typingLetter(event) {
     const keyPressed = event.key;
     typedLetters.push(keyPressed)
     let miss = wordRandomSelected.includes(keyPressed);
     if (miss != true) {
         wrongLetters.push(keyPressed);
+
     } else {
         correctLetters.push(keyPressed);
     }
+    // Wrong letters + body parts
+    for (let i = 0; i < attempts; i++) {
+        if (wrongLetters[i] === keyPressed) {
+            mistakes++;
+            drawLetters("red", wrongLetters[i], wrongLettersPosition[i], 140);
+            drawBodyParts(mistakes);
+        }
+    }
+    // Correct letters
     let counter = 0;
     while (counter < wordRandomSelected.length) {
         if (wordRandomSelected[counter] === keyPressed) {
-            drawLetters(wordRandomSelected[counter], xDashesPosition[counter], 440);
-            console.log(wordRandomSelected[counter])
+            drawLetters("blue", wordRandomSelected[counter], dashesPosition[counter], 440);
         }
         counter += 1;
     }
 }
+window.addEventListener("keydown", typingLetter);
