@@ -1,17 +1,11 @@
 //VARIABLES
 let dashesPosition = [];
-console.log(dashesPosition);
 let wrongLettersPosition = [];
-console.log(wrongLettersPosition);
 const typedLetters = [];
-console.log(typedLetters);
 const correctLetters = [];
-console.log(correctLetters);
 const wrongLetters = [];
-console.log(wrongLetters);
-
-let hits = 0;
 let mistakes = 0;
+let mistakeCounter = [];
 let attempts = 7;
 
 //Canvas
@@ -109,7 +103,6 @@ function drwaingRightArm() {
     drawingTheBody("black", 355, 325, 250, 250);
 }
 
-
 // Left arm
 function drwaingLeftArm() {
     drawingTheBody("black", 355, 325, 460, 250);
@@ -124,7 +117,6 @@ function drwaingLeftLeg() {
 function drwaingRightLeg() {
     drawingTheBody("black", 355, 500, 250, 600);
 }
-
 
 // **********DASHES AND WORDS**********
 // Creating words by categories
@@ -153,6 +145,7 @@ function drawDashes(xPosition) {
 }
 drawDashes(500);
 
+// Wrong letters positions
 function drawWrongLetters(xPosition) {
     for (let i = 0; i < attempts; i++) {
         xPosition += 70;
@@ -167,17 +160,23 @@ function typingLetter(event) {
     typedLetters.push(keyPressed)
     let miss = wordRandomSelected.includes(keyPressed);
     if (miss != true) {
-        wrongLetters.push(keyPressed);
-
+        if (!wrongLetters.includes(keyPressed)) {
+            wrongLetters.push(keyPressed);
+        }
     } else {
-        correctLetters.push(keyPressed);
+        if (!correctLetters.includes(keyPressed)) {
+            correctLetters.push(keyPressed);
+        }
     }
     // Wrong letters + body parts
     for (let i = 0; i < attempts; i++) {
         if (wrongLetters[i] === keyPressed) {
-            mistakes++;
-            drawLetters("red", wrongLetters[i], wrongLettersPosition[i], 140);
-            drawBodyParts(mistakes);
+            if (!mistakeCounter.includes(i)) {
+                mistakes++;
+                mistakeCounter.push(i);
+                drawLetters("red", wrongLetters[i], wrongLettersPosition[i], 140);
+                drawBodyParts(mistakes);
+            }
         }
     }
     // Correct letters
@@ -189,4 +188,66 @@ function typingLetter(event) {
         counter += 1;
     }
 }
-window.addEventListener("keydown", typingLetter);
+// Conditions to end the game
+function endGame() {
+    if (mistakeCounter.length === attempts) {
+        modal("Você naõ conseguiu adivinhar !", "lose");
+    } else if (dashesPosition.length === correctLetters.length) {
+        modal("Você conseguiu adivinhar !", "win");
+    }
+}
+
+// End game Modal 
+function modal(phrase, style) {
+    const getSection = document.getElementById("endGame");
+
+    const modal = document.createElement("div");
+    modal.setAttribute("id", "modal");
+    modal.setAttribute("class", "modal");
+    getSection.insertBefore(modal, getSection.children[0]);
+
+    const modalContent = document.createElement("div");
+    modalContent.setAttribute("class", "modal-content");
+    modal.appendChild(modalContent);
+
+    const modalHeader = document.createElement("div");
+    modalHeader.setAttribute("class", "modal-header-" + style);
+    modalContent.appendChild(modalHeader);
+
+    const modalSpan = document.createElement("span");
+    modalSpan.setAttribute("class", "close");
+    modalHeader.appendChild(modalSpan);
+    modalSpan.innerHTML = "&times;";
+
+    modalSpan.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    const modalH2 = document.createElement("h2");
+    modalHeader.appendChild(modalH2);
+    const modalH2Content = document.createTextNode("Fim de jogo !");
+    modalH2.appendChild(modalH2Content);
+
+    const modalBody = document.createElement("div");
+    modalBody.setAttribute("class", "modal-body");
+    modalContent.appendChild(modalBody);
+
+    const modalP = document.createElement("p");
+    modalBody.appendChild(modalP);
+    const modalPContent = document.createTextNode(phrase);
+    modalP.appendChild(modalPContent);
+
+    const modalFooter = document.createElement("div");
+    modalFooter.setAttribute("class", "modal-footer-" + style);
+    modalContent.appendChild(modalFooter);
+
+    const btn = document.createElement("button");
+    btn.setAttribute("class", "modal-playAgain");
+    btn.setAttribute("onclick", "window.location.reload()")
+    modalFooter.appendChild(btn);
+    const btnContent = document.createTextNode("Jogar novamente?");
+    btn.appendChild(btnContent);
+}
+
+window.addEventListener("keypress", typingLetter);
+window.addEventListener("keypress", endGame);
